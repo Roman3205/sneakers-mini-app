@@ -3,27 +3,37 @@
     <div
       class="grid lg:grid-cols-4 md:gap-5 sm:gap-3 lg:gap-8 xl:gap-14 md:grid-cols-3 sm:grid-cols-2 w-full gap-y-5"
     >
-      <transition-group name="products" :css="true">
-        <base-product-card-vue
-          v-for="product in products"
-          :key="product.id"
-          :image-url="product.imageUrl"
-          :title="product.title"
-          :price="product.price"
-          :id="product.id"
-          :is-added="product.isAdded"
-          :is-favourite="product.isFavourite"
-          @on-click-remove="() => onClickCartAction(product)"
-        ></base-product-card-vue>
-      </transition-group>
+      <Suspense>
+        <template #default>
+          <transition-group name="products" :css="true">
+            <base-product-card-vue
+              v-for="product in products"
+              :key="product.id"
+              :image-url="product.imageUrl"
+              :title="product.title"
+              :price="product.price"
+              :id="product.id"
+              :is-added="product.isAdded"
+              :is-favourite="product.isFavourite"
+              @on-click-remove="() => onClickCartAction(product)"
+            ></base-product-card-vue>
+          </transition-group>
+        </template>
+      </Suspense>
     </div>
   </div>
 </template>
 
 <script setup>
-import BaseProductCardVue from '@/components/BaseProductCard.vue'
-import { inject } from 'vue'
+// import BaseProductCardVue from '@/components/BaseProductCard.vue'
+import Test from './Test.vue'
+import { defineAsyncComponent, inject } from 'vue'
 const onClickCartAction = inject('onClickCartAction')
+let BaseProductCardVue = defineAsyncComponent({
+  loader: () => import('@/components/BaseProductCard.vue'),
+  suspensible: false,
+  loadingComponent: Test
+})
 
 defineProps({
   products: Array

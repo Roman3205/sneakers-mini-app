@@ -13,6 +13,8 @@ import TheHeader from '@/components/TheHeader.vue'
 import axios from 'axios'
 import TheCartBlock from '@/components/TheCartBlock.vue'
 import { ref, watch, provide, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
+const route = useRoute()
 
 const cartItems = ref([])
 const cartOpen = ref(false)
